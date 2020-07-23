@@ -1,5 +1,5 @@
 import aiohttp
-from .errors import HttpException
+from .errors import HttpException, NotFound
 from .user import User
 from .chat import Chat
 from .message import Message
@@ -24,11 +24,15 @@ class HTTPSession:
     async def get_user(self, username):
         query = {"query": "query{userByDisplayName(displayname: \"user_var\"){username displayname avatar partnerStatus createdAt wallet{balance totalEarning} canSubscribe banStatus deactivated offlineImage}}".replace("user_var", username)}
         user_json = await self._request(json=query)
+        if user_json["userByDisplayName"] is None:
+            raise NotFound("This user was not found")
         return User(data=user_json["userByDisplayName"])
 
     async def get_chat(self, username):
         query = {"query": "query{userByDisplayName(displayname: \"user_var\"){treasureChest{value state} chatInterval chatMode followers{totalCount} hostingLivestream{id permlink ageRestriction thumbnailUrl disableAlert title createdAt totalReward watchingCount language{code language} category{title imgUrl coverImgUrl} view} livestream{id permlink ageRestriction thumbnailUrl disableAlert title createdAt totalReward watchingCount language{code language} category{title imgUrl coverImgUrl} view} about}}".replace("user_var", username)}
         chat_json = await self._request(json=query)
+        if chat_json["userByDisplayName"] is None:
+            raise NotFound("This chat was not found")
         return Chat(bot=self._bot, data=chat_json["userByDisplayName"], name=username)
 
     async def send_message(self, chat: Chat, content):

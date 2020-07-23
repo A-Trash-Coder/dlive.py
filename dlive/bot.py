@@ -47,35 +47,8 @@ class Bot:
         setattr(self, func.__name__, func)
         return func
 
-    async def ready(self):
-        pass
-
-    async def stream_start(self):
-        pass
-
-    async def stream_end(self):
-        pass
-
-    async def mod_remove(self, chat, user):
-        pass
-
-    async def mod_add(self, chat, user):
-        pass
-
-    async def user_timeout(self, chat, user, moderator, time):
-        pass
-
-    async def follow(self, chat, user):
-        pass
-
-    async def message(self, message):
-        await self.handle_command(message)
-
     async def error(self, error, data=None):
         traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
-
-    async def raw_data(self, data):
-        pass
 
     async def handle_command(self, message):
         prefix_used = None

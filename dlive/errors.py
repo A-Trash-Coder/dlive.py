@@ -6,3 +6,9 @@ class ConnectionError(DLivePyException):
 
 class HttpException(DLivePyException):
     pass
+
+class NotFound(DLivePyException):
+    pass
+
+class Forbidden(DLivePyException):
+    pass

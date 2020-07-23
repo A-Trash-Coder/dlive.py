@@ -54,8 +54,15 @@ class WebsocketConnection:
         await self._dispatch("ready")
 
     async def _dispatch(self, event: str, *args, **kwargs):
-        func = getattr(self._bot, f'{event}')
-        self.loop.create_task(func(*args, **kwargs))
+        try:
+            coro = getattr(self._bot, f'{event}')
+        except AttributeError:
+            pass
+        else:
+            try:
+                await coro(*args, **kwargs)
+            except asyncio.CancelledError:
+                pass
 
     async def error(self, error: Exception, data: str=None):
         traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
