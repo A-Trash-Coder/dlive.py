@@ -50,6 +50,12 @@ class Bot:
     async def ready(self):
         pass
 
+    async def stream_start(self):
+        pass
+
+    async def stream_end(self):
+        pass
+
     async def message(self, message):
         await self.handle_command(message)
 

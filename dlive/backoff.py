@@ -2,7 +2,8 @@ import time
 import random
 
 class ExponentialBackoff:
-    """An implementation of the exponential backoff algorithm
+    """Credit to R. Danny for this file
+    An implementation of the exponential backoff algorithm
     Provides a convenient interface to implement an exponential backoff
     for reconnecting or retrying transmissions in a distributed network.
     Once instantiated, the delay method will return the next interval to
