@@ -56,6 +56,18 @@ class Bot:
     async def stream_end(self):
         pass
 
+    async def mod_remove(self, chat, user):
+        pass
+
+    async def mod_add(self, chat, user):
+        pass
+
+    async def user_timeout(self, chat, user, moderator, time):
+        pass
+
+    async def follow(self, chat, user):
+        pass
+
     async def message(self, message):
         await self.handle_command(message)
 

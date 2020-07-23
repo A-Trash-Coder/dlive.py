@@ -48,7 +48,7 @@ class WebsocketConnection:
                     'extensions': {},
                     'operationName': 'StreamMessageSubscription',
                     'query':
-                        'subscription StreamMessageSubscription($streamer: String!) {\n  streamMessageReceived(streamer: $streamer) {\n    type\n    ... on ChatGift {\n      id\n      gift\n      amount\n      recentCount\n      expireDuration\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatLive {\n      type}\n    ... on ChatOffline {\n      type}\n    ... on ChatHost {\n      id\n      viewer\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatSubscription {\n      id\n      month\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatChangeMode {\n      mode\n    }\n    ... on ChatText {\n      id\n      content\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatFollow {\n      id\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatDelete {\n      ids\n    }\n    ... on ChatBan {\n      id\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatModerator {\n      id\n      ...VStreamChatSenderInfoFrag\n      add\n    }\n    ... on ChatEmoteAdd {\n      id\n      ...VStreamChatSenderInfoFrag\n      emote\n    }\n  }\n}\n\nfragment VStreamChatSenderInfoFrag on SenderInfo {\n  subscribing\n  role\n  roomRole\n  sender {\n    id\n    username\n    displayname\n    avatar\n    partnerStatus\n  }\n}\n'
+                        'subscription StreamMessageSubscription($streamer: String!) {\n  streamMessageReceived(streamer: $streamer) {\n    type\n    ... on ChatGift {\n      id\n      gift\n      amount\n      recentCount\n      expireDuration\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatLive {\n      type}\n    ...on ChatTimeout {\n      type\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatOffline {\n      type}\n    ... on ChatHost {\n      id\n      viewer\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatSubscription {\n      id\n      month\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatChangeMode {\n      mode\n    }\n    ... on ChatText {\n      id\n      content\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatFollow {\n      id\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatDelete {\n      ids\n    }\n    ... on ChatBan {\n      id\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatModerator {\n      id\n      ...VStreamChatSenderInfoFrag\n      add\n    }\n    ... on ChatEmoteAdd {\n      id\n      ...VStreamChatSenderInfoFrag\n      emote\n    }\n  }\n}\n\nfragment VStreamChatSenderInfoFrag on SenderInfo {\n  subscribing\n  role\n  roomRole\n  sender {\n    id\n    username\n    displayname\n    avatar\n    partnerStatus\n  }\n}\n'
                 }
             }))
         await self._dispatch("ready")
@@ -97,6 +97,26 @@ class WebsocketConnection:
             if data["payload"]["data"]["streamMessageReceived"][0]["type"] == "Offline":
                 chat = await self._bot.http.get_chat(data["id"])
                 return await self._dispatch('stream_end', chat)
+            if data["payload"]["data"]["streamMessageReceived"][0]["type"] == "Follow":
+                user = await self._bot.get_user(data["payload"]["data"]["streamMessageReceived"][0]["sender"]["username"])
+                chat = await self._bot.http.get_chat(data["id"])
+                return await self._dispatch('follow', chat, user)
+            if data["payload"]["data"]["streamMessageReceived"][0]["type"] == "Mod":
+                user = await self._bot.get_user(data["payload"]["data"]["streamMessageReceived"][0]["sender"]["username"])
+                chat = await self._bot.http.get_chat(data["id"])
+                if data["payload"]["data"]["streamMessageReceived"][0]["roomRole"] == "Member":
+                    return await self._dispatch('mod_remove', chat, user)
+                if data["payload"]["data"]["streamMessageReceived"][0]["roomRole"] == "Moderator":
+                    return await self._dispatch('mod_add', chat, user)
+            if data["payload"]["data"]["streamMessageReceived"][0]["type"] == "Ban":
+                user = await self._bot.get_user(data["payload"]["data"]["streamMessageReceived"][0]["sender"]["username"])
+                chat = await self._bot.http.get_chat(data["id"])
+                return await self._dispatch('ban', chat, user)
+            if data["payload"]["data"]["streamMessageReceived"][0]["type"] == "Timeout":
+                user = await self._bot.get_user(data["payload"]["data"]["streamMessageReceived"][0]["sender"]["username"])
+                moderator = await self._bot.get_user(data["payload"]["data"]["streamMessageReceived"][0]["bannedBy"]["username"])
+                chat = await self._bot.http.get_chat(data["id"])
+                return await self._dispatch('user_timeout', chat, user, moderator, data["payload"]["data"]["streamMessageReceived"][0]["minute"])
 
         pass
 
