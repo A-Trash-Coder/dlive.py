@@ -16,6 +16,10 @@ class User:
         self.offline_image = data["offlineImage"]
 
     @property
+    def mention(self):
+        return f"@{self.displayname}"
+
+    @property
     def is_verified_partner(self):
         return self.partner_status == PartnerStatus.verified_partner
 

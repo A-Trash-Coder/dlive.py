@@ -88,7 +88,9 @@ class WebsocketConnection:
             pass
         if data['type'] == 'data':
             if data["payload"]["data"]["streamMessageReceived"][0]["type"] == "Message":
-                return await self._dispatch('message', Message(bot=self._bot, data=data["payload"]["data"]["streamMessageReceived"][0]))
+                chat = await self._bot.get_chat(data["id"])
+                author = await self._bot.get_user(data["payload"]["data"]["streamMessageReceived"][0]["sender"]["username"])
+                return await self._dispatch('message', Message(bot=self._bot, data=data["payload"]["data"]["streamMessageReceived"][0], chat=chat, author=author))
             if data["payload"]["data"]["streamMessageReceived"][0]["type"] == "Live":
                 chat = await self._bot.http.get_chat(data["id"])
                 return await self._dispatch('stream_start', chat)

@@ -71,6 +71,6 @@ class Bot:
             if message.content.startswith(pre):
                 prefix_used = pre
                 break
-        print(prefix_used)
+
         if prefix_used is None:
             return
