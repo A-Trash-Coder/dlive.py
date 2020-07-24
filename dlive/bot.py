@@ -7,6 +7,17 @@ import inspect
 from .http import HTTPSession
 
 class Bot:
+    """DLive Bot for interacting with the wss and API
+
+    Parameters
+    ----------
+    command_prefix: Union[list, tuple, str]
+        The prefix for the bots commands
+    channels: list
+        The initial channels for the bot to connect to
+    loop: asyncio.BaseEventLoop [Optional]
+        The asyncio event loop to use
+    """
     def __init__(self, command_prefix: Union[list, tuple, str], channels: list, loop: asyncio.BaseEventLoop=None):
         self.command_prefix = self.set_prefix(command_prefix)
         self.channels = channels
@@ -16,12 +27,53 @@ class Bot:
         self.http = HTTPSession(self.loop, self)
 
     async def get_user(self, username):
+        """Returns a dlive.User based on the given
+        username
+
+        Parameters
+        ----------
+        username: str
+            The users unique username
+
+        Raises
+        ------
+        dlive.errors.NotFound
+            No user exists with this username
+
+        Returns
+        -------
+        Optional[dlive.User]
+        """
         return await self.http.get_user(username)
 
     async def get_chat(self, username):
+        """Returns a dlive.Chat based on the given
+        name (Owner's username)
+
+        Parameters
+        ----------
+        username: str
+            The chats unique name (Owner's username)
+
+        Raises
+        ------
+        dlive.errors.NotFound
+            No chat exists with this name
+
+        Returns
+        -------
+        Optional[dlive.Chat]
+        """
         return await self.http.get_chat(username)
 
     def run(self, token):
+        """Main blocking call that starts the bot
+        
+        Parameters
+        ----------
+        token: str
+            The authorization token used to make requests
+        """
         self.token = token
         loop = self.loop or asyncio.get_event_loop()
 
@@ -40,15 +92,29 @@ class Bot:
         if isinstance(command_prefix, str):
             return [command_prefix]
 
-    def listener(self, func):
-        if not inspect.iscoroutinefunction(func):
-            raise TypeError('Events must be coroutines.')
+    def listener(self, coroutine):
+        """Adds a listener to the bot, that is called
+        when a specific event occurs
 
-        setattr(self, func.__name__, func)
-        return func
+        Raises
+        ------
+        TypeError:
+            The function is not a coroutine
 
-    async def error(self, error, data=None):
-        traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
+        Parameters
+        ----------
+        coroutine: coroutine
+        """
+        if not inspect.iscoroutinefunction(coroutine):
+            raise TypeError('Bot listeners must be a coroutines function.')
+
+        setattr(self, coroutine.__name__, coroutine)
+        return coroutine
+
+    async def error(self):
+        """Default error handler
+        """
+        traceback.print_exc()
 
     async def handle_command(self, message):
         prefix_used = None

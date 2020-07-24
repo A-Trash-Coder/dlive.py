@@ -73,7 +73,6 @@ class WebsocketConnection:
         while True:
             try:
                 data = json.loads(await self._websocket.recv())
-                print(data)
             except websockets.ConnectionClosed:
                 if self._tearingdown:
                     break

@@ -12,7 +12,7 @@ class ChatMode(Enum):
     subonly = 2
     followonly = 3
 
-class Ban(Enum):
+class BanStatus(Enum):
     no_ban = 1
     ban_from_streaming = 2
     account_suspended = 3

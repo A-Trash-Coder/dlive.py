@@ -5,7 +5,7 @@ DLive.py is an asynchronous wrapper for making bots in Python, for DLive
 ### THIS IS IN DEVELOPMENT
 
 ### Support
-For support with the wrapper, please join the support server [here](https://discord.gg/)
+For support with the wrapper, please join the support server [here](https://discord.gg/WSEFTkY)
 
 ### Installation
 To install dlive.py, the use on of the following commands

@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf8") as fh:
 
 setup(
     name="dlive.py",
-    version="0.0.2",
+    version="0.0.1",
     author="Gavyn Stanley",
     description="An API Wrapper for interacting with DLive",
     long_description=long_desc,
