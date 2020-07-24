@@ -28,6 +28,9 @@ class Language:
         self.code = data["code"]
         self.name = data["language"]
 
+    def __str__(self):
+        return self.name
+
 class Category:
     """Represents a DLive stream category
     
@@ -44,6 +47,9 @@ class Category:
         self.title = data["title"]
         self.image_url = data["imgUrl"]
         self.cover_image_url = data["coverImgUrl"]
+    
+    def __str__(self):
+        return self.title
         
 class TreasureChest:
     def __init__(self, data):

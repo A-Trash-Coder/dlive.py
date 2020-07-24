@@ -56,6 +56,15 @@ class User:
         self.is_deactivated: bool = data["deactivated"]
         self.offline_image = data["offlineImage"]
 
+    def __str__(self):
+        return self.displayname
+
+    def __eq__(self, other_user):
+        return isinstance(other_user, User) and other_user.username == self.username
+
+    def __ne__(self, other_user):
+        return not self.__eq__(other_user)
+
     @property
     def mention(self):
         return f"@{self.displayname}"

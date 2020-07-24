@@ -27,6 +27,9 @@ class Message:
         self.content = data["content"]
         self.created_at = datetime.datetime.utcfromtimestamp(int(data["createdAt"][:-9]))
         self.author = author
+
+    def __str__(self):
+        return self.content
         
     async def delete(self):
         """Deletes the message from the chat

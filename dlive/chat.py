@@ -43,6 +43,15 @@ class Chat:
         self.treasure_chest = TreasureChest(data=data["treasureChest"])
         self._bot = bot
 
+    def __str__(self):
+        return self.name
+
+    def __eq__(self, other_chat):
+        return isinstance(other_chat, Chat) and other_chat.name == self.name
+
+    def __ne__(self, other_chat):
+        return not self.__eq__(other_chat)
+
     async def send(self, content):
         """Sends a message to a DLive chat
 

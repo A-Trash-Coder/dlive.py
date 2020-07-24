@@ -38,3 +38,6 @@ class Livestream:
         self.language = tiny_models.Language(data["language"])
         self.category = tiny_models.Category(data["category"])
         self.views: int = data["view"]
+
+    def __str__(self):
+        return self.title
