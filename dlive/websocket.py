@@ -1,14 +1,17 @@
-import json
 import asyncio
-import traceback
+import json
 import sys
-from .backoff import ExponentialBackoff
-from . import errors
+import traceback
+
 import websockets
+
+from . import errors
+from .backoff import ExponentialBackoff
 from .message import Message
 
+
 class WebsocketConnection:
-    def __init__(self, bot, *, loop: asyncio.BaseEventLoop=None, **attrs):
+    def __init__(self, bot, *, loop: asyncio.BaseEventLoop = None, **attrs):
         self._bot = bot
         self.loop = loop or asyncio.get_event_loop()
         self._host = "wss://graphigostream.prd.dlive.tv"
@@ -64,8 +67,9 @@ class WebsocketConnection:
             except asyncio.CancelledError:
                 pass
 
-    async def error(self, error: Exception, data: str=None):
-        traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
+    async def error(self, error: Exception, data: str = None):
+        traceback.print_exception(
+            type(error), error, error.__traceback__, file=sys.stderr)
 
     async def _websocket_listen(self):
         backoff = ExponentialBackoff()
@@ -83,7 +87,7 @@ class WebsocketConnection:
 
             if data["type"] == "connection_error":
                 raise errors.ConnectionError(data["payload"]["message"])
-            
+
             await self._process_websocket_data(data)
             await self._dispatch("raw_data", data)
 
@@ -97,7 +101,6 @@ class WebsocketConnection:
             pass
         if type == "data":
             data_type = data["payload"]["data"]
-            
             if data_type == "streamMessageReceived":
                 stream_message_recieved_type = data["payload"]["data"]["streamMessageReceived"][0]["type"]
 
@@ -105,15 +108,15 @@ class WebsocketConnection:
                     chat = await self._bot.get_chat(data["id"])
                     author = await self._bot.get_user(data["payload"]["data"]["streamMessageReceived"][0]["sender"]["username"])
                     return await self._dispatch("message", Message(bot=self._bot, data=data["payload"]["data"]["streamMessageReceived"][0], chat=chat, author=author))
-                
+
                 elif stream_message_recieved_type == "Live":
                     chat = await self._bot.http.get_chat(data["id"])
                     return await self._dispatch("stream_start", chat)
-                
+
                 elif stream_message_recieved_type == "Offline":
                     chat = await self._bot.http.get_chat(data["id"])
                     return await self._dispatch("stream_end", chat)
-                
+
                 elif stream_message_recieved_type == "Follow":
                     user = await self._bot.get_user(data["payload"]["data"]["streamMessageReceived"][0]["sender"]["username"])
                     chat = await self._bot.http.get_chat(data["id"])
@@ -144,4 +147,5 @@ class WebsocketConnection:
 
     def teardown(self):
         self._tearingdown = True
-        self.loop.run_until_complete(self.loop.create_task(self._websocket.close()))
+        self.loop.run_until_complete(
+            self.loop.create_task(self._websocket.close()))

@@ -1,8 +1,10 @@
 from os import name
+
 from .enums import ChatMode
 from .livestream import Livestream
-from .user import User 
 from .tiny_models import TreasureChest
+from .user import User
+
 
 class Chat:
     """Represents a DLive chat room
@@ -23,7 +25,7 @@ class Chat:
         livestream the user is hosting or
         None if one is not occuring
     followers: int
-        The totla amount of followers the chat has
+        The total amount of followers the chat has
     chat_mode: dlive.ChatMode
         The type of chat mode the chat is in
     chat_interval: int
@@ -31,12 +33,17 @@ class Chat:
     treasure_chest: dlive.TreasureChest
         Treasue Chest object containing details
         about it, the amount, etc.
+    owner: dlive.User
+        The owner of a chat
     """
+
     def __init__(self, bot, data, name):
         self.name = name.lower()
         self.about = data["about"]
-        self.livestream = Livestream(data["livestream"]) if data["livestream"] is not None else None
-        self.livestream_hosting = Livestream(data["hostingLivestream"]) if data["hostingLivestream"] is not None else None
+        self.livestream = Livestream(
+            data["livestream"]) if data["livestream"] is not None else None
+        self.livestream_hosting = Livestream(
+            data["hostingLivestream"]) if data["hostingLivestream"] is not None else None
         self.followers: int = data["followers"]["totalCount"]
         self.chat_mode = ChatMode[data["chatMode"].lower()]
         self.chat_interval: int = data["chatInterval"]
@@ -51,6 +58,15 @@ class Chat:
 
     def __ne__(self, other_chat):
         return not self.__eq__(other_chat)
+
+    async def owner(self):
+        """Returns the owner of a chat
+
+        Returns
+        -------
+        dlive.User
+        """
+        return await self._bot.get_user(self.name)
 
     async def send(self, content):
         """Sends a message to a DLive chat
@@ -82,7 +98,7 @@ class Chat:
         """
         await self._bot.http.remove_moderator(self, user)
 
-    async def ban(self, user: User): 
+    async def ban(self, user: User):
         """Bans someone from the chat
 
         Parameters
@@ -115,7 +131,7 @@ class Chat:
 
     async def add_filter_word(self, word):
         """Adds a word to filter in chat
-        
+
         Parameters
         ----------
         word: str
@@ -125,7 +141,7 @@ class Chat:
 
     async def delete_filter_word(self, word):
         """Deletes a word from the chat filter list
-        
+
         Parameters
         ----------
         word: str
@@ -135,7 +151,7 @@ class Chat:
 
     async def ban_emote(self, emote):
         """Bans an emote in chat
-        
+
         Parameters
         ----------
         emote: str
@@ -145,7 +161,7 @@ class Chat:
 
     async def unban_emote(self, emote):
         """Un-Bans an emote in chat
-        
+
         Parameters
         ----------
         emote: str
@@ -155,7 +171,7 @@ class Chat:
 
     async def timeout_user(self, user: User, duration: int):
         """Times out a user for a specified duration
-        
+
         Parameters
         ----------
         user: dlive.User
@@ -167,7 +183,7 @@ class Chat:
 
     async def untimeout_user(self, user: User):
         """Un-Times out a user
-        
+
         Parameters
         ----------
         user: dlive.User

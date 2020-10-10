@@ -1,10 +1,12 @@
+import asyncio
+import inspect
 import sys
 import traceback
 from typing import Union
-import asyncio
-from .websocket import WebsocketConnection
-import inspect
+
 from .http import HTTPSession
+from .websocket import WebsocketConnection
+
 
 class Bot:
     """DLive Bot for interacting with the wss and API
@@ -18,7 +20,8 @@ class Bot:
     loop: asyncio.BaseEventLoop [Optional]
         The asyncio event loop to use
     """
-    def __init__(self, command_prefix: Union[list, tuple, str], channels: list, loop: asyncio.BaseEventLoop=None):
+
+    def __init__(self, command_prefix: Union[list, tuple, str], channels: list, loop: asyncio.BaseEventLoop = None):
         self.command_prefix = self.set_prefix(command_prefix)
         self.channels = channels
         self.loop = loop or asyncio.get_event_loop()
@@ -68,7 +71,7 @@ class Bot:
 
     def run(self, token):
         """Main blocking call that starts the bot
-        
+
         Parameters
         ----------
         token: str

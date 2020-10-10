@@ -1,5 +1,6 @@
-import time
 import random
+import time
+
 
 class ExponentialBackoff:
     """Credit to R. Danny for this file

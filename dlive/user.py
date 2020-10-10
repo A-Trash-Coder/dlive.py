@@ -1,6 +1,8 @@
-from .enums import PartnerStatus, BanStatus
-from . import tiny_models
 import datetime
+
+from . import tiny_models
+from .enums import BanStatus, PartnerStatus
+
 
 class User:
     """Represents a user registered on DLive
@@ -44,12 +46,14 @@ class User:
     is_stream_banned: bool
         Whether the person is banned from streaming
     """
+
     def __init__(self, data):
         self.username = data["username"]
         self.displayname = data["displayname"]
         self.avatar_url = data["avatar"]
         self.partner_status = PartnerStatus[data["partnerStatus"].lower()]
-        self.created_at = datetime.datetime.utcfromtimestamp(int(data["createdAt"][:-3]))
+        self.created_at = datetime.datetime.utcfromtimestamp(
+            int(data["createdAt"][:-3]))
         self.wallet = tiny_models.Wallet(data["wallet"])
         self.is_subscribeable: bool = data["canSubscribe"]
         self.ban_status = BanStatus[data["banStatus"].lower()]

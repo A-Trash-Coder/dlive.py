@@ -1,5 +1,6 @@
 from .enums import TreasureChestState
 
+
 class Wallet:
     def __init__(self, data):
         """Represents a users wallet
@@ -14,6 +15,7 @@ class Wallet:
         self.balance: int = data["balance"]
         self.total_earnings = data["totalEarning"]
 
+
 class Language:
     """Represents a DLive language used for streams
 
@@ -24,6 +26,7 @@ class Language:
     name: str
         The name of the language
     """
+
     def __init__(self, data):
         self.code = data["code"]
         self.name = data["language"]
@@ -31,9 +34,10 @@ class Language:
     def __str__(self):
         return self.name
 
+
 class Category:
     """Represents a DLive stream category
-    
+
     Attributes
     ----------
     title: str
@@ -43,14 +47,16 @@ class Category:
     cover_imaage_url: str
         Categoriess banner art
     """
+
     def __init__(self, data):
         self.title = data["title"]
         self.image_url = data["imgUrl"]
         self.cover_image_url = data["coverImgUrl"]
-    
+
     def __str__(self):
         return self.title
-        
+
+
 class TreasureChest:
     def __init__(self, data):
         """Represents a chats Treasure Chest

@@ -1,8 +1,9 @@
 import datetime
 
+
 class Message:
     """Represents a message sent to a chat
-    
+
     Attributes
     ----------
     chat: dlive.Chat
@@ -18,6 +19,7 @@ class Message:
     author: dlive.User
         Who sent the message
     """
+
     def __init__(self, bot, data, chat, author):
         self.chat = chat
         self._data = data
@@ -25,12 +27,13 @@ class Message:
         self.type = data["type"]
         self.id: int = data["id"]
         self.content = data["content"]
-        self.created_at = datetime.datetime.utcfromtimestamp(int(data["createdAt"][:-9]))
+        self.created_at = datetime.datetime.utcfromtimestamp(
+            int(data["createdAt"][:-9]))
         self.author = author
 
     def __str__(self):
         return self.content
-        
+
     async def delete(self):
         """Deletes the message from the chat
         """

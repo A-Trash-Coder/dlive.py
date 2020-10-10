@@ -1,5 +1,7 @@
 import datetime
+
 from . import tiny_models
+
 
 class Livestream:
     """Represents a occuring DLive Livestream
@@ -27,12 +29,14 @@ class Livestream:
     views: int
         Total amount of view the livestream recieved
     """
+
     def __init__(self, data):
-        self.is_x_tagged: bool= data["ageRestriction"]
+        self.is_x_tagged: bool = data["ageRestriction"]
         self.thumbnail_url = data["thumbnailUrl"]
         self.gift_alert_disabled: bool = data["disableAlert"]
         self.title = data["title"]
-        self.created_at = datetime.datetime.utcfromtimestamp(int(data["createdAt"][:-3]))
+        self.created_at = datetime.datetime.utcfromtimestamp(
+            int(data["createdAt"][:-3]))
         self.dontation_amount_recieved: int = data["totalReward"]
         self.current_viewers: int = data["watchingCount"]
         self.language = tiny_models.Language(data["language"])
