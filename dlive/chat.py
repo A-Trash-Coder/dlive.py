@@ -1,5 +1,3 @@
-from os import name
-
 from .enums import ChatMode
 from .livestream import Livestream
 from .tiny_models import TreasureChest

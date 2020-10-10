@@ -1,6 +1,5 @@
 import asyncio
 import inspect
-import sys
 import traceback
 from typing import Union
 
