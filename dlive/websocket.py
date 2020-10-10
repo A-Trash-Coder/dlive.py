@@ -99,14 +99,14 @@ class WebsocketConnection:
     async def _process_websocket_data(self, data):
         """Process data, check for ack, messages, etc. Remember if its a message to dispatch message"""
         type = data["type"]
-
         if type == "connection_ack":
             pass
         if type == "ka":
             pass
         if type == "data":
             data_type = data["payload"]["data"]
-            if data_type == "streamMessageReceived":
+            try:
+                data_type["streamMessageReceived"]
                 stream_message_recieved_type = data["payload"]["data"]["streamMessageReceived"][0]["type"]
 
                 if stream_message_recieved_type == "Message":
@@ -147,7 +147,8 @@ class WebsocketConnection:
                     moderator = await self._bot.get_user(data["payload"]["data"]["streamMessageReceived"][0]["bannedBy"]["username"])
                     chat = await self._bot.http.get_chat(data["id"])
                     return await self._dispatch("user_timeout", chat, user, moderator, data["payload"]["data"]["streamMessageReceived"][0]["minute"])
-
+            except KeyError:
+                pass
         pass
 
     def teardown(self):
