@@ -1,7 +1,7 @@
 from .bot import Bot
 from .chat import Chat
 from .enums import ChatMode, BanStatus, TreasureChestState, PartnerStatus
-from .errors import ConnectionError, HttpException, NotFound, Forbidden
+from .errors import ConnectionError, HttpException, Forbidden
 from .http import HttpException
 from .livestream import Livestream
 from .message import Message

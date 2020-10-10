@@ -37,15 +37,6 @@ class Bot:
         ----------
         username: str
             The users unique username
-
-        Raises
-        ------
-        dlive.errors.NotFound
-            No user exists with this username
-
-        Returns
-        -------
-        Optional[dlive.User]
         """
         return await self.http.get_user(username)
 
@@ -57,11 +48,6 @@ class Bot:
         ----------
         username: str
             The chats unique name (Owner's username)
-
-        Raises
-        ------
-        dlive.errors.NotFound
-            No chat exists with this name
 
         Returns
         -------

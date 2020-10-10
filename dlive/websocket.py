@@ -1,5 +1,6 @@
 import asyncio
 import json
+import logging
 import sys
 import traceback
 
@@ -39,8 +40,12 @@ class WebsocketConnection:
         await self._join_stream_channels()
 
     async def _join_stream_channels(self):
-        # TODO make sure the channel is found. If not, send an error, and log.warning()
         for channel in self._bot.channels:
+            fetch_channel = await self._bot.get_chat(channel)
+            if fetch_channel is None:
+                logging.warning(msg=f"{channel} is not a known channel on DLive!")
+                continue
+
             await self._websocket.send(json.dumps({
                 "id": channel,
                 "type": "start",
