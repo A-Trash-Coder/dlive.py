@@ -1,9 +1,9 @@
-from .enums import TreasureChestState
+from ..enums import TreasureChestState
 
 
 class Wallet:
     def __init__(self, data):
-        """Represents a users wallet
+        """Represents a users wallet.
 
         Attributes
         ----------
@@ -17,7 +17,7 @@ class Wallet:
 
 
 class Language:
-    """Represents a DLive language used for streams
+    """Represents a DLive language used for streams.
 
     Attributes
     ----------
@@ -36,7 +36,7 @@ class Language:
 
 
 class Category:
-    """Represents a DLive stream category
+    """Represents a DLive stream category.
 
     Attributes
     ----------
@@ -59,7 +59,7 @@ class Category:
 
 class TreasureChest:
     def __init__(self, data):
-        """Represents a chats Treasure Chest
+        """Represents a chats Treasure Chest.
 
         Attributes
         ----------

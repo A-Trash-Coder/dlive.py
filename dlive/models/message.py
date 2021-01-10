@@ -2,7 +2,7 @@ import datetime
 
 
 class Message:
-    """Represents a message sent to a chat
+    """Represents a message sent to a chat.
 
     Attributes
     ----------
@@ -18,6 +18,8 @@ class Message:
         When the message was sent
     author: dlive.User
         Who sent the message
+    command: Optional[dlive.Command]
+        The command of the message
     """
 
     def __init__(self, bot, data, chat, author):
@@ -30,12 +32,13 @@ class Message:
         self.created_at = datetime.datetime.utcfromtimestamp(
             int(data["createdAt"][:-9]))
         self.author = author
+        self.command = None
 
     def __str__(self):
         return self.content
 
     async def delete(self):
-        """Deletes the message from the chat
-        """
+        """Deletes the message from the chat."""
         chat = await self._bot.get_chat(self._data["sender"]["username"])
+
         return await self._bot.http.delete_chat_message(chat, self.id)

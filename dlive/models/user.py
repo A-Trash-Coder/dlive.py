@@ -1,7 +1,7 @@
 import datetime
 
+from ..enums import BanStatus, PartnerStatus
 from . import tiny_models
-from .enums import BanStatus, PartnerStatus
 
 
 class User:
@@ -71,28 +71,35 @@ class User:
 
     @property
     def mention(self):
+        """A string formatted to mention a user."""
         return f"@{self.displayname}"
 
     @property
     def is_verified_partner(self):
+        """Whether the user is a verified partner on DLive."""
         return self.partner_status == PartnerStatus.verified_partner
 
     @property
     def is_global_partner(self):
+        """Whether the user is a global partner on DLive."""
         return self.partner_status == PartnerStatus.global_partner
 
     @property
     def is_affiliate(self):
+        """Whether the user is a DLive affiliate."""
         return self.partner_status == PartnerStatus.affiliate
 
     @property
     def is_global_partner_suspended(self):
+        """Whether the user's global partner status is suspended."""
         return self.partner_status == PartnerStatus.global_partner_suspended
 
     @property
     def is_account_suspended(self):
+        """Whether the user's account is suspended."""
         return self.ban_status == BanStatus.account_suspended
 
     @property
     def is_stream_banned(self):
+        """Whether the user is banned from streaming."""
         return self.ban_status == BanStatus.ban_from_streaming

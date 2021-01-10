@@ -4,7 +4,7 @@ from . import tiny_models
 
 
 class Livestream:
-    """Represents a occuring DLive Livestream
+    """Represents a occuring DLive Livestream.
 
     Attributes
     ----------

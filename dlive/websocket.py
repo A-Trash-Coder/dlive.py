@@ -8,7 +8,7 @@ import websockets
 
 from . import errors
 from .backoff import ExponentialBackoff
-from .message import Message
+from .models.message import Message
 
 
 class WebsocketConnection:
@@ -26,8 +26,8 @@ class WebsocketConnection:
     async def _connect(self):
         try:
             self._websocket = await websockets.connect(self._host, timeout=30, subprotocols="graphql-ws")
-        except Exception as e:
-            raise errors.ConnectionError(e)
+        except Exception as exc:
+            raise errors.ConnectionError(exc)
 
         if self.is_connected:
             self.loop.create_task(self._authenticate())
@@ -42,8 +42,9 @@ class WebsocketConnection:
     async def _join_stream_channels(self):
         for channel in self._bot.channels:
             fetch_channel = await self._bot.get_chat(channel)
-            if fetch_channel is None:
-                logging.warning(msg=f"{channel} is not a known channel on DLive!")
+            if not fetch_channel:
+                logging.warning(
+                    msg=f"{channel} is not a known channel on DLive!")
                 continue
 
             await self._websocket.send(json.dumps({
@@ -97,12 +98,11 @@ class WebsocketConnection:
             await self._dispatch("raw_data", data)
 
     async def _process_websocket_data(self, data):
-        """Process data, check for ack, messages, etc. Remember if its a message to dispatch message"""
+        """Process data, check for ack, messages, etc. Remember if its a message to dispatch message."""
         type = data["type"]
-        if type == "connection_ack":
+        if type in ["connection_ack", "ka"]:
             pass
-        if type == "ka":
-            pass
+
         if type == "data":
             data_type = data["payload"]["data"]
             try:

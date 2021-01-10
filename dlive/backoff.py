@@ -12,6 +12,7 @@ class ExponentialBackoff:
     delay increases exponentially with each retry up to a maximum of
     2^10 * base, and is reset if no more attempts are needed in a period
     of 2^11 * base seconds.
+    
     Parameters
     ----------
     base: :class:`int`
@@ -24,13 +25,11 @@ class ExponentialBackoff:
 
     def __init__(self, base=1, *, integral=False):
         self._base = base
-
         self._exp = 0
         self._max = 10
         self._reset_time = base * 2 ** 11
         self._last_invocation = time.monotonic()
 
-        # Use our own random instance to avoid messing with global one
         rand = random.Random()
         rand.seed()
 
@@ -53,4 +52,5 @@ class ExponentialBackoff:
             self._exp = 0
 
         self._exp = min(self._exp + 1, self._max)
+
         return self._randfunc(0, self._base * 2 ** self._exp)
