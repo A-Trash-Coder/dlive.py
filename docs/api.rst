@@ -45,7 +45,7 @@ Models
 Bot
 ~~~
 
-.. autoclass:: dlive.models.Bot
+.. autoclass:: dlive.Bot
     :members:
 
 Chat

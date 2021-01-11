@@ -2,3 +2,4 @@ testing.py
 dlive.py.egg-info
 .vscode
 __pycache__
+_build
