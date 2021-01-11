@@ -9,29 +9,29 @@ class Chat:
 
     Attributes
     ----------
-    name: str
+    name: :class:`str`
         The chats name (Owner's name)
     about: str
         The chats description
-    livestream: dlive.Livestream [Optional]
+    livestream: :class:`~dlive.models.Livestream` [Optional]
         Returns a Livestream object which 
         gives information on the current livestream
         or None if one is not occuring
-    livestream_hosting: dlive.Livestream [Optional]
+    livestream_hosting: Optional[:class:`~dlive.Livestream`]
         Returns a Livestream object which 
         gives information on the current 
         livestream the user is hosting or
         None if one is not occuring
-    followers: int
+    followers: :class:`int`
         The total amount of followers the chat has
-    chat_mode: dlive.ChatMode
+    chat_mode: :class:`~dlive.enums.ChatMode`
         The type of chat mode the chat is in
-    chat_interval: int
+    chat_interval: :class:`int`
         The interval in which users can speak
-    treasure_chest: dlive.TreasureChest
+    treasure_chest: :class:`~dlive.enums.TreasureChest~
         Treasue Chest object containing details
         about it, the amount, etc.
-    owner: dlive.User
+    owner: :class:`~dlive.models.User`
         The owner of a chat
     """
 
@@ -57,12 +57,12 @@ class Chat:
     def __ne__(self, other_chat):
         return not self.__eq__(other_chat)
 
-    async def owner(self):
+    async def owner(self) -> User:
         """Returns the owner of a chat.
 
         Returns
         -------
-        dlive.User
+        :class:`~dlive.models.User`
         """
         return await self._bot.get_user(self.name)
 
@@ -71,7 +71,7 @@ class Chat:
 
         Parameters
         ----------
-        content: str
+        content: :class:`str`
             What to send to the chat
         """
         await self._bot.http.send_message(self, content)
@@ -81,7 +81,7 @@ class Chat:
 
         Parameters
         ----------
-        user: dlive.User
+        user: :class:`~dlive.User`
             The user to make a moderator
         """
         await self._bot.http.add_moderator(self, user)
@@ -91,7 +91,7 @@ class Chat:
 
         Parameters
         ----------
-        user: dlive.User
+        user: :class:`~dlive.models.User`
             The user to remove as a moderator
         """
         await self._bot.http.remove_moderator(self, user)
@@ -101,7 +101,7 @@ class Chat:
 
         Parameters
         ----------
-        user: dlive.User
+        user: :class:`~dlive.models.User`
             The user to ban
         """
         await self._bot.http.ban_user(self, user)
@@ -111,7 +111,7 @@ class Chat:
 
         Parameters
         ----------
-        user: dlive.User
+        user: :class:`~dlive.models.User`
             The user to un-ban
         """
         await self._bot.http.unban_user(self, user)
@@ -121,7 +121,7 @@ class Chat:
 
         Parameters
         ----------
-        seconds: int
+        seconds: :class:`int`
             The amount of seconds to set the chat
             interval to
         """
@@ -132,7 +132,7 @@ class Chat:
 
         Parameters
         ----------
-        word: str
+        word: :class:`str`
             The word to add
         """
         await self._bot.http.add_filter_word(self, word)
@@ -142,7 +142,7 @@ class Chat:
 
         Parameters
         ----------
-        word: str
+        word: :class:`str`
             The word to remove
         """
         await self._bot.http.delete_filter_word(self, word)
@@ -152,7 +152,7 @@ class Chat:
 
         Parameters
         ----------
-        emote: str
+        emote: :class:`str`
             The emote to ban
         """
         await self._bot.http.ban_emote(self, emote)
@@ -162,7 +162,7 @@ class Chat:
 
         Parameters
         ----------
-        emote: str
+        emote: :class:`str`
             The emote to un-ban
         """
         await self._bot.http.unban_emote(self, emote)
@@ -172,9 +172,9 @@ class Chat:
 
         Parameters
         ----------
-        user: dlive.User
+        user: :class:`~dlive.models.User`
             The user to timeout
-        duration: int
+        duration: :class:`int`
             The amount of minutes to timeout the user
         """
         await self._bot.http.timeout_user(self, user, duration)
@@ -184,7 +184,7 @@ class Chat:
 
         Parameters
         ----------
-        user: dlive.User
+        user: :class:`~dlive.models.User`
             The user to un-timeout
         """
         await self._bot.http.timeout_user(self, user, 0)

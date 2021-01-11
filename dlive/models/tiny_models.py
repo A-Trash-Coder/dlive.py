@@ -2,16 +2,17 @@ from ..enums import TreasureChestState
 
 
 class Wallet:
-    def __init__(self, data):
-        """Represents a users wallet.
+    """Represents a users wallet.
 
-        Attributes
-        ----------
-        balance: int
-            Amount in the wallet
-        total_earnings: int
-            Total amount of what the user has earned
-        """
+    Attributes
+    ----------
+    balance: int
+        Amount in the wallet
+    total_earnings: int
+        Total amount of what the user has earned
+    """
+
+    def __init__(self, data):
         self.balance: int = data["balance"]
         self.total_earnings = data["totalEarning"]
 
@@ -21,9 +22,9 @@ class Language:
 
     Attributes
     ----------
-    code: str
+    code: :class:`str`
         The language ISO code
-    name: str
+    name: :class:`str`
         The name of the language
     """
 
@@ -31,7 +32,7 @@ class Language:
         self.code = data["code"]
         self.name = data["language"]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
 
@@ -40,11 +41,11 @@ class Category:
 
     Attributes
     ----------
-    title: str
+    title: :class:`str`
         The name of the category
-    image_url: str
+    image_url: :class:`str`
         The categories cover art
-    cover_imaage_url: str
+    cover_image_url: :class:`str`
         Categoriess banner art
     """
 
@@ -53,20 +54,21 @@ class Category:
         self.image_url = data["imgUrl"]
         self.cover_image_url = data["coverImgUrl"]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.title
 
 
 class TreasureChest:
-    def __init__(self, data):
-        """Represents a chats Treasure Chest.
+    """Represents a chats Treasure Chest.
 
-        Attributes
-        ----------
-        value: int
-            The value of the chest
-        state: dlive.TreasureChestState
-            The state of the chest
-        """
+    Attributes
+    ----------
+    value: :class:`int`
+        The value of the chest
+    state: :class:`dlive.enums.TreasureChestState`
+        The state of the chest
+    """
+
+    def __init__(self, data):
         self.value = data["value"]
         self.state = TreasureChestState[data["state"].lower()]

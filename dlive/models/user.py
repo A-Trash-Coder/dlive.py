@@ -9,41 +9,41 @@ class User:
 
     Attributes
     ----------
-    username: str
+    username: :class:`str`
         The users unique username
-    displayname: str
+    displayname: :class:`str`
         The users display name, most
         likely the username with a capitalization
         differences
-    avatar_url: str
+    avatar_url: :class:`str`
         Url to the users avatar image
-    partner_status: dlive.PartnerStatus
+    partner_status: :class:`dlive.enums.PartnerStatus`
         The status of their DLive partnership
-    created_at: datetime
+    created_at: :class:`datetime`
         When the users account was created
-    wallet: dlive.Wallet
+    wallet: :class:`models.tiny_model.Wallet`
         The users wallet
-    is_subscribeable: bool
+    is_subscribeable: :class:`bool`
         Whether the user can be subscribed to
-    ban_status: dlive.BanStatus
+    ban_status: :class:`dlive.enums.BanStatus`
         The users ban status
-    is_deactivated: bool
+    is_deactivated: :class:`bool`
         Whether the users account is deactivated
-    offline_image: str
+    offline_image: :class:`str`
         The users offline cover art
-    mention: str
+    mention: :class:`str`
         The users name in mention form
-    is_verified_partner: bool
+    is_verified_partner: :class:`bool`
         Whether the user is a verified partner
-    is_global_partner: bool
+    is_global_partner: :class:`bool`
         Whether the user is a global partner
-    is_affliate: bool
+    is_affliate: :class:`bool`
         Whether the user is an affliate
-    is_global_partner_suspended: bool
+    is_global_partner_suspended: :class:`bool`
         Whether the users global partner is a suspended status
-    is_account_suspended: bool
+    is_account_suspended: :class:`bool`
         Whether the users account is suspended
-    is_stream_banned: bool
+    is_stream_banned: :class:`bool`
         Whether the person is banned from streaming
     """
 
@@ -70,36 +70,36 @@ class User:
         return not self.__eq__(other_user)
 
     @property
-    def mention(self):
+    def mention(self) -> str:
         """A string formatted to mention a user."""
         return f"@{self.displayname}"
 
     @property
-    def is_verified_partner(self):
+    def is_verified_partner(self) -> bool:
         """Whether the user is a verified partner on DLive."""
         return self.partner_status == PartnerStatus.verified_partner
 
     @property
-    def is_global_partner(self):
+    def is_global_partner(self) -> bool:
         """Whether the user is a global partner on DLive."""
         return self.partner_status == PartnerStatus.global_partner
 
     @property
-    def is_affiliate(self):
+    def is_affiliate(self) -> bool:
         """Whether the user is a DLive affiliate."""
         return self.partner_status == PartnerStatus.affiliate
 
     @property
-    def is_global_partner_suspended(self):
+    def is_global_partner_suspended(self) -> bool:
         """Whether the user's global partner status is suspended."""
         return self.partner_status == PartnerStatus.global_partner_suspended
 
     @property
-    def is_account_suspended(self):
+    def is_account_suspended(self) -> bool:
         """Whether the user's account is suspended."""
         return self.ban_status == BanStatus.account_suspended
 
     @property
-    def is_stream_banned(self):
+    def is_stream_banned(self) -> bool:
         """Whether the user is banned from streaming."""
         return self.ban_status == BanStatus.ban_from_streaming

@@ -33,7 +33,7 @@ py -3 -m pip install -U git+https://github.com/A-Trash-Coder/dlive.py
 ```python
 import dlive
 
-bot = dlive.Bot(command_prefix="!", channels=["A-Trash-Coder"])
+bot = dlive.models.Bot(command_prefix="!", channels=["A-Trash-Coder"])
 
 @bot.listener
 async def ready():

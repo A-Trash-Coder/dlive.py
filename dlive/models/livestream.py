@@ -8,25 +8,25 @@ class Livestream:
 
     Attributes
     ----------
-    is_nsfw: bool
+    is_nsfw: :class:`bool`
         Whether it is age restricted
-    thumbnail_url: str
+    thumbnail_url: :class:`str`
         The streams thumbnail url
-    gift_alert_disabled: bool
+    gift_alert_disabled: :class:`bool`
         Whether gift alerts are disabled in the channel
-    title: str
+    title: :class:`str`
         The streams title
-    created_at: datetime
+    created_at: :class:`datetime`
         When the stream started
-    donation_amount_recieved: int
+    donation_amount_recieved: :class:`int`
         Total amount of donations recieved during the current sstream
-    current_viewers: int
+    current_viewers: :class:`int`
         Current amount of viewers watching
-    language: str
+    language: :class:`str`
         The language the stream is in
-    category: str
+    category: :class:`str`
         The streams categorized sanction
-    views: int
+    views: :class:`int`
         Total amount of view the livestream recieved
     """
 

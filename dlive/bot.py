@@ -3,19 +3,19 @@ import inspect
 import traceback
 from typing import Union
 
-from ..command import Command
-from ..errors import CommandError
-from ..http import HTTPSession
-from ..stringparser import StringParser
-from ..websocket import WebsocketConnection
+from .command import Command
+from .errors import CommandError
+from .http import HTTPSession
+from .stringparser import StringParser
+from .websocket import WebsocketConnection
 
 
 class Bot:
     """DLive Bot for interacting with the wss and API.
 
     Parameters
-    ----------
-    command_prefix: Union[list, tuple, str]
+    -----------
+    command_prefix: Union[class:`list`, class:`tuple`, :class:`str`]
         The prefix for the bots commands
     channels: list
         The initial channels for the bot to connect to
@@ -33,28 +33,32 @@ class Bot:
         self.http = HTTPSession(self.loop, self)
 
     async def get_user(self, username):
-        """Returns a dlive.User based on the given
-        username.
+        """Returns a user based on the given username.
 
         Parameters
-        ----------
-        username: str
-            The users unique username
+        -----------
+        username: :class:`str`
+            The user's unique name.
+
+        Returns
+        -------
+        Optional[:class:`~dlive.models.User`]
+            The user or ``None`` if not found.
         """
         return await self.http.get_user(username)
 
     async def get_chat(self, username):
-        """Returns a dlive.Chat based on the given
-        name (Owner's username).
+        """Returns a chat based on the given name (Owner's username).
 
         Parameters
         ----------
-        username: str
-            The chats unique name (Owner"s username)
+        username: :class:`str`
+            The chats unique name (Owner's username)
 
         Returns
         -------
-        Optional[dlive.Chat]
+        Optional[:class:`~dlive.models.Chat`]
+            The chat or ``None`` if not found.
         """
         return await self.http.get_chat(username)
 
@@ -63,15 +67,14 @@ class Bot:
 
         Parameters
         ----------
-        token: Optional[str]
+        token: Optional[:class:`str`]
             The authorization token used to make authorized requests
         """
-        self.token = token
-        loop = self.loop or asyncio.get_event_loop()
-
-        loop.run_until_complete(self._ws._connect())
-
         try:
+            self.token = token
+            loop = self.loop or asyncio.get_event_loop()
+
+            loop.run_until_complete(self._ws._connect())
             loop.run_until_complete(self._ws._websocket_listen())
         except KeyboardInterrupt:
             pass
@@ -83,7 +86,7 @@ class Bot:
 
         Parameters
         ----------
-        command_prefix: Union[str, list, tuple]
+        command_prefix: Union[:class:`str`, :class:`list`, :class:`tuple`]
             The prefix(es) to set as the bots prefix
         """
         if isinstance(command_prefix, (tuple, list)):
@@ -96,14 +99,15 @@ class Bot:
         """Adds a listener to the bot, that is called
         when a specific event occurs.
 
+        Parameters
+        ----------
+        coroutine: 
+            coroutine
+
         Raises
         ------
         TypeError:
             The function is not a coroutine
-
-        Parameters
-        ----------
-        coroutine: coroutine
         """
         if not inspect.iscoroutinefunction(coroutine):
             raise TypeError("Listeners must be coroutines.")
@@ -117,8 +121,15 @@ class Bot:
 
         Parameters
         ----------
-        command: dlive.Command
+        command: :class:`~dlive.Command`
             The command to add
+
+        Raises
+        ------
+        TypeError: 
+            A :class:`~dlive.Command` instance was not passed
+        CommandError:
+            The function was not a coroutine or a command with the name already exists
         """
         if not isinstance(command, Command):
             raise TypeError("A dlive.Command must be passed.")
@@ -147,7 +158,7 @@ class Bot:
 
         Parameters
         ----------
-        command: dlive.Command
+        command: :class:`~dlive.Command`
             The command to remove
         """
         if command.aliases:
@@ -168,7 +179,7 @@ class Bot:
 
         Parameters
         ----------
-        message: dlive.Message
+        message: :class:`~dlive.models.Message`
             The message context which was used to invoke the command
 
         error: Exception
@@ -181,7 +192,7 @@ class Bot:
 
         Parameters
         ----------
-        message: dlive.Message
+        message: :class:`~dlive.models.Message`
             The message context which was sent
         """
         await self.handle_commands(message)
@@ -192,8 +203,13 @@ class Bot:
 
         Parameters
         ----------
-        message: dlive.Message
+        message: :class:`~dlive.models.Message`
             The message context which was sent
+
+        Raises
+        ------
+        CommandError: 
+            The command was not registered
         """
         prefix_used = None
         for pre in self.command_prefix:
@@ -257,10 +273,10 @@ class Bot:
 
         Parameters
         ----------
-        name: str
+        name: :class:`str`
             Name of the command. Determines how the command 
             will be invoked. I.e. <prefix><name>
-        aliases: Union[list, tuple]
+        aliases: Union[:class:`list`, :class:`tuple`]
             Other known names of the command
         """
         if cls and not inspect.isclass(cls):

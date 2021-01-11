@@ -17,7 +17,7 @@ setup(
     description='A Python wrapper for the DLive API',
     long_description=long_desc,
     long_description_content_type="text/markdown",
-    install_requires=["websockets"],
+    install_requires=["websockets", "aiohttp"],
     python_requires='>=3.5.3',
     classifiers=[
         'License :: OSI Approved :: MIT License',

@@ -8,8 +8,7 @@ import websockets
 
 from . import errors
 from .backoff import ExponentialBackoff
-from .models.message import Message
-
+from .models import Message
 
 class WebsocketConnection:
     def __init__(self, bot, *, loop: asyncio.BaseEventLoop = None, **attrs):

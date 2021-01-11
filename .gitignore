@@ -1,2 +1,4 @@
 testing.py
 dlive.py.egg-info
+.vscode
+__pycache__

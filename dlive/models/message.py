@@ -6,19 +6,19 @@ class Message:
 
     Attributes
     ----------
-    chat: dlive.Chat
+    chat: :class:`models.Chat`
         The chat the message belongs to
-    type: str
+    type: :class:`str`
         The type of message sent
-    id: str
+    id: :class:`str`
         The id of the message
-    content: str
+    content: :class:`str`
         What the message contained
-    created_at: datetime
+    created_at: :class:`datetime`
         When the message was sent
-    author: dlive.User
+    author: :class:`models.User`
         Who sent the message
-    command: Optional[dlive.Command]
+    command: Optional[:class:`dlive.Command`]
         The command of the message
     """
 
