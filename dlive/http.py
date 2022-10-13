@@ -15,7 +15,6 @@ class HTTPSession:
     async def _request(self, json, method="POST", headers={}):
         async with self._session.request(url=self.BASE, method=method, json=json, headers=headers) as response:
             response_json = await response.json()
-            print(response_json)
             try:
                 error = response_json["errors"]
                 if error[0]["message"] == "Require login":

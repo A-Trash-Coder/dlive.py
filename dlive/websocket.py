@@ -24,7 +24,7 @@ class WebsocketConnection:
 
     async def _connect(self):
         try:
-            self._websocket = await websockets.connect(self._host, timeout=30, subprotocols="graphql-ws")
+            self._websocket = await websockets.connect(self._host, timeout=30, subprotocols=["graphql-ws"])
         except Exception as exc:
             raise errors.ConnectionError(exc)
 
